@@ -3,11 +3,13 @@ package ru.geekbrains.pocket.backend.repository;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
+import org.springframework.stereotype.Repository;
 import ru.geekbrains.pocket.backend.domain.User;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public interface UserRepository extends MongoRepository<User, ObjectId> {
 
     User findFirstByUsername(String username);
@@ -19,13 +21,18 @@ public interface UserRepository extends MongoRepository<User, ObjectId> {
     @Query("{firstname:'?0'}")
     List<User> findCustomByFirstname(String firstname);
 
-    List<User> findByEmail(String email);
+    User findByEmail(String email);
 
     @Query("{'email':?0}")
-    List<User> findByUserEmail(String email);
+    User findByUserEmail(String email);
 
     @Query(value = "{ 'firstname' : ?0 }", fields = "{ 'firstname' : 1, 'lastname' : 1}")
     List<User> findByTheUsersFirstname(String firstname);
+
+    Optional<User> findByEmailMatches(String email);
+
+    User findByProfile_Username(String _Username);
+
 }
 
 //Keyword 	    Sample 	                            Logical result
